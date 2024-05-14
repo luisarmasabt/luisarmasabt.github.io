@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Pokémon Favorito</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="style.css" rel="stylesheet">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div>
+        <img class="img" src="pokemon img/pokemon.jpg" alt="">
+        
+    </div>
+   
+    <div class="container text-center">
+        <div class="pokeball-bg pokeball-bg-1"></div>
+        <div class="pokeball-bg pokeball-bg-2"></div>
+        <div class="pokeball-bg pokeball-bg-3"></div>
+        <h1 class="my-4">Descubre Mi Pokémon Favorito</h1>
+        <button id="showPokemonBtn" class="btn btn-primary btn-lg">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" alt="Pokébola" class="pokeball-icon"> Mostrar mi Pokémon favorito
+        </button>
+        <div id="pokemonInfo" class="pokemon-info mt-4"></div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Custom JS -->
+    <script>
+        document.getElementById('showPokemonBtn').addEventListener('click', function() {
+            // Nombre del Pokémon favorito (puedes cambiarlo por el que prefieras)
+            const pokemonName = 'pikachu';
+
+            // URL de la API para obtener la información del Pokémon
+            const apiUrl = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`;
+
+            // Realizar la solicitud a la API de Pokémon
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    // Extraer la imagen y la información relevante del Pokémon
+                    const pokemonImage = data.sprites.front_default;
+                    const pokemonInfo = `
+                        <div class="card mx-auto" style="width: 18rem;">
+                            <img src="${pokemonImage}" class="card-img-top" alt="${pokemonName}">
+                            <div class="card-body">
+                                <h5 class="card-title">${data.name.charAt(0).toUpperCase() + data.name.slice(1)}</h5>
+                                <p class="card-text"><strong>Altura:</strong> ${data.height} cm</p>
+                                <p class="card-text"><strong>Peso:</strong> ${data.weight} kg</p>
+                                <p class="card-text"><strong>Tipos:</strong> ${data.types.map(type => type.type.name).join(', ')}</p>
+                            </div>
+                        </div>
+                    `;
+                    // Mostrar la imagen y la información en el área designada
+                    document.getElementById('pokemonInfo').innerHTML = pokemonInfo;
+                })
+                .catch(error => {
+                    console.error('Error al obtener la información del Pokémon:', error);
+                });
+        });
+    </script>
+</body>
+</html>
